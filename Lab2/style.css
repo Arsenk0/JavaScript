@@ -1,0 +1,31 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.myclass {
+    color: #2d264a;
+}
+
+.temp {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.m1 {
+    color: #2d264a;
+}
+
+.m0 {
+    font-size: 20px;
+    color: #000;
+}
+
+/* Стилі для інших елементів */
+h1.n1 {
+    font-size: 36px;
+}
+
+h1.n2 {
+    font-size: 40px;
+    color: red;
+}
