@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна №6 - Масиви та об'єкти JS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f0f0f0;
+        }
+        h1 {
+            color: #333;
+        }
+        .block {
+            background-color: #fff;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input {
+            font-size: 16px;
+            padding: 5px;
+            width: 150px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body onload="clock()">
+
+<h1>Лабораторна робота №6</h1>
+
+<!-- Завдання 1 -->
+<div class="block">
+    <h2>Завдання 1: Поточна дата і час</h2>
+    <div id="staticDateTime"></div>
+</div>
+
+<!-- Завдання 2 -->
+<div class="block">
+    <h2>Завдання 2: Працюючий годинник</h2>
+    <form name="clock">
+        Час: <br>
+        <input type="text" name="time" readonly><br><br>
+        Дата: <br>
+        <input type="text" name="date" readonly>
+    </form>
+</div>
+
+<!-- Завдання 3 -->
+<div class="block">
+    <h2>Завдання 3: Робота з масивом</h2>
+    <div id="arrayOutput"></div>
+</div>
+
+<script>
+    // Завдання 1 - відображення поточної дати і часу
+    function showStaticDateTime() {
+        let now = new Date();
+        let time = now.getHours() + ":" + (now.getMinutes() < 10 ? "0" : "") + now.getMinutes();
+        let date = (now.getMonth() + 1) + "/" + now.getDate() + "/" + now.getFullYear();
+        document.getElementById("staticDateTime").innerHTML = "<strong>Time:</strong> " + time + "<br><strong>Date:</strong> " + date;
+    }
+
+    // Завдання 2 - годинник у реальному часі
+    function clock() {
+        let now = new Date();
+        let hours = now.getHours();
+        let minutes = now.getMinutes();
+        let seconds = now.getSeconds();
+
+        let timeStr = "" + hours;
+        timeStr += (minutes < 10 ? ":0" : ":") + minutes;
+        timeStr += (seconds < 10 ? ":0" : ":") + seconds;
+
+        let date = now.getDate();
+        let month = now.getMonth() + 1;
+        let year = now.getFullYear();
+
+        let dateStr = "" + month;
+        dateStr += (date < 10 ? "/0" : "/") + date;
+        dateStr += "/" + year;
+
+        document.clock.time.value = timeStr;
+        document.clock.date.value = dateStr;
+
+        setTimeout(clock, 1000);
+    }
+
+    // Завдання 3 - масив
+    function showArrayContent() {
+        let myArray = [];
+        myArray[0] = "first element";
+        myArray[1] = "second element";
+        myArray[2] = "third element";
+
+        let output = "";
+        for (let i = 0; i < myArray.length; i++) {
+            output += myArray[i] + "<br>";
+        }
+        document.getElementById("arrayOutput").innerHTML = output;
+    }
+
+    // Виклик функцій
+    showStaticDateTime();
+    showArrayContent();
+</script>
+</body>
+</html>
