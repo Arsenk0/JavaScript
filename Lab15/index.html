@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Практична робота 15</title>
+    <style>
+        /* Для завдання 2 */
+        .head {
+            padding: 10px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<!-- Завдання 1 -->
+<a href="https://google.com">Посилання на Google</a><br />
+<a href="http://safari.com">Посилання на Safari</a><br />
+
+<!-- Завдання 2 -->
+<h2 class="head">header1</h2>
+<h2 class="head">header2 <span class="inner">inner elem1</span></h2>
+<h2>header3</h2>
+<h2 class="head">header4<span>inner elem2</span></h2>
+<h2>header5</h2>
+
+<!-- Завдання 3 -->
+<h3>header1</h3>
+<div>text1</div>
+<h3>header2</h3>
+<div>text2</div>
+
+<!-- Завдання 4 -->
+<div>
+    <label><input type="checkbox" class="chk" /> Checkbox 1</label><br />
+    <label><input type="checkbox" class="chk" /> Checkbox 2</label><br />
+    <label><input type="checkbox" class="chk" /> Checkbox 3</label><br />
+    <label><input type="checkbox" class="chk" /> Checkbox 4</label><br />
+    <label><input type="checkbox" class="chk" /> Checkbox 5</label><br />
+    <label><input type="checkbox" class="chk" /> Checkbox 6</label><br />
+</div>
+
+<script>
+    $(document).ready(function() {
+        // Завдання 1
+        $('a[href^="https://"]').attr('target', '_blank');
+
+        // Завдання 2
+        $('h2.head').css('background-color', 'green')
+            .find('.inner')
+            .css('font-size', '35px');
+
+        // Завдання 3
+        // Знайти всі <h3>, для кожного знайти наступний сусідній <div> і перемістити його над <h3>
+        $('h3').each(function() {
+            const h3 = $(this);
+            const nextDiv = h3.next('div');
+            if (nextDiv.length) {
+                nextDiv.insertBefore(h3);
+            }
+        });
+
+        // Завдання 4
+        $('.chk').on('change', function() {
+            const checkedCount = $('.chk:checked').length;
+            if (checkedCount >= 3) {
+                $('.chk').prop('disabled', true);
+            }
+        });
+    });
+</script>
+
+<script>
+    // Завдання 5 - Деструктурування масиву
+    let arr = ["Tom", "Sam", "Ray", "Bob"];
+    let [x, y, , ...z] = arr;
+    console.log(x); // "Tom"
+    console.log(y); // "Sam"
+    console.log(z); // ["Bob"]
+
+    // Завдання 6 - Деструктурування об'єкта
+    let data = {
+        names: ["Sam", "Tom", "Ray", "Bob"],
+        ages: [20, 24, 22, 26],
+    };
+
+    let {
+        names: [, name2, , name4],
+        ages: [, age2, , age4]
+    } = data;
+
+    console.log(name2); // "Tom"
+    console.log(age2);  // 24
+    console.log(name4); // "Bob"
+    console.log(age4);  // 26
+
+    // Завдання 7 - Функція mul
+    function mul(...args) {
+        let product = 1;
+        let hasNumber = false;
+
+        for (const val of args) {
+            if (typeof val === 'number' && !isNaN(val)) {
+                product *= val;
+                hasNumber = true;
+            }
+        }
+
+        return hasNumber ? product : 0;
+    }
+
+    console.log(mul(1, "str", 2, 3, true)); // 6
+    console.log(mul(null, "str", false, true)); // 0
+
+    // Завдання 8 - Використання стрілкових функцій замість bind
+    let server = {
+        data: 0,
+        convertToString: function (callback) {
+            callback(() => this.data + "");
+        }
+    };
+
+    let client = {
+        server: server,
+        result: "",
+        calc: function (data) {
+            this.server.data = data;
+            this.server.convertToString(this.notification());
+        },
+        notification: function () {
+            return (callback) => {
+                this.result = callback();
+            };
+        }
+    };
+
+    client.calc(123);
+    console.log(client.result); // "123"
+    console.log(typeof client.result); // "string"
+
+    // Завдання 9 - Функція mapBuilder
+    function mapBuilder(keysArray, valuesArray) {
+        let map = new Map();
+        for (let i = 0; i < keysArray.length; i++) {
+            map.set(keysArray[i], valuesArray[i]);
+        }
+        return map;
+    }
+
+    let keys = [1, 2, 3, 4];
+    let values = ["div", "span", "b", "i"];
+    let map = mapBuilder(keys, values);
+    console.log(map.size); // 4
+    console.log(map.get(2)); // "span"
+</script>
+
+</body>
+</html>
