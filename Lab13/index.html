@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Лабораторна робота №13</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            transition: background-color 0.3s;
+        }
+        button, select {
+            margin: 5px 0;
+            padding: 5px 10px;
+        }
+        #message {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h2>1. Робота з вікном window</h2>
+<button id="openWindowBtn">Відкрити нове вікно</button>
+
+<hr />
+
+<h2>2. Зміна стилю тегу &lt;p&gt;</h2>
+<p id="text">I learning JavaScript events!</p>
+<div>
+    <button id="changeStyleBtn">Change style!</button>
+</div>
+
+<hr />
+
+<h2>3. Події на кнопках і лінці</h2>
+<button id="btn1">Кнопка 1 (клік)</button><br />
+<button id="btn2">Кнопка 2 (подвійний клік)</button><br />
+<button id="btn3">Кнопка 3 (натискання і утримання)</button><br />
+<a href="#" id="link1">Наведи на мене</a>
+
+<hr />
+
+<h2>4. Видалення елемента з випадаючого списку</h2>
+<select id="selectToDelete" size="4">
+    <option>Опція 1</option>
+    <option>Опція 2</option>
+    <option>Опція 3</option>
+    <option>Опція 4</option>
+</select><br />
+<button id="deleteOptionBtn">Видалити вибраний елемент</button>
+
+<hr />
+
+<h2>5. Повідомлення при взаємодії з кнопкою</h2>
+<button id="msgBtn">Натисни мене</button>
+<div id="message"></div>
+
+<hr />
+
+<h2>6. Відслідковування розміру вікна браузера</h2>
+<div id="windowSize">Поточний розмір: ширина - , висота - </div>
+
+<hr />
+
+<h2>7*. Два випадаючих списки: країна і місто</h2>
+<select name="country" id="country">
+    <option value="ger">Germany</option>
+    <option value="usa">USA</option>
+    <option value="ukr">Ukraine</option>
+</select>
+
+<select name="cities" id="cities"></select>
+
+<p id="selectedCountryCity"></p>
+
+<script>
+    // 1. Робота з новим вікном window
+    const openWindowBtn = document.getElementById('openWindowBtn');
+    let newWin = null;
+    openWindowBtn.onclick = () => {
+        newWin = window.open('', '', 'width=300,height=300');
+        newWin.document.write('<p style="font-size:20px;">Це нове вікно</p>');
+
+        // Через 2 сек змінити розмір на 500х500
+        setTimeout(() => {
+            newWin.resizeTo(500, 500);
+        }, 2000);
+
+        // Через 4 сек перемістити в точку (200,200)
+        setTimeout(() => {
+            newWin.moveTo(200, 200);
+        }, 4000);
+
+        // Через 6 сек закрити вікно
+        setTimeout(() => {
+            newWin.close();
+        }, 6000);
+    };
+
+    // 2. Функція зміни стилю <p>
+    function changeCSS() {
+        const p = document.getElementById('text');
+        p.style.color = 'orange';
+        p.style.fontSize = '20px';
+        p.style.fontFamily = '"Comic Sans MS", cursive, sans-serif';
+    }
+    document.getElementById('changeStyleBtn').onclick = changeCSS;
+
+    // 3. Події на кнопках і лінці
+    const btn1 = document.getElementById('btn1');
+    const btn2 = document.getElementById('btn2');
+    const btn3 = document.getElementById('btn3');
+    const link1 = document.getElementById('link1');
+
+    btn1.addEventListener('click', () => {
+        document.body.style.backgroundColor = 'blue';
+    });
+
+    btn2.addEventListener('dblclick', () => {
+        document.body.style.backgroundColor = 'pink';
+    });
+
+    btn3.addEventListener('mousedown', () => {
+        document.body.style.backgroundColor = 'brown';
+    });
+
+    btn3.addEventListener('mouseup', () => {
+        document.body.style.backgroundColor = 'white';
+    });
+
+    link1.addEventListener('mouseenter', () => {
+        document.body.style.backgroundColor = 'yellow';
+    });
+
+    link1.addEventListener('mouseleave', () => {
+        document.body.style.backgroundColor = 'white';
+    });
+
+    // 4. Видалення вибраного елемента з випадаючого списку
+    const selectToDelete = document.getElementById('selectToDelete');
+    const deleteOptionBtn = document.getElementById('deleteOptionBtn');
+
+    deleteOptionBtn.addEventListener('click', () => {
+        const selectedIndex = selectToDelete.selectedIndex;
+        if (selectedIndex !== -1) {
+            selectToDelete.remove(selectedIndex);
+        }
+    });
+
+    // 5. Повідомлення по взаємодії з кнопкою
+    const msgBtn = document.getElementById('msgBtn');
+    const message = document.getElementById('message');
+
+    msgBtn.addEventListener('click', () => {
+        message.textContent = 'I was pressed!';
+    });
+
+    msgBtn.addEventListener('mouseenter', () => {
+        message.textContent = 'Mouse on me!';
+    });
+
+    msgBtn.addEventListener('mouseleave', () => {
+        message.textContent = 'Mouse is not on me!';
+    });
+
+    // 6. Відслідковування розміру вікна браузера
+    const windowSize = document.getElementById('windowSize');
+
+    function updateWindowSize() {
+        windowSize.textContent = `Поточний розмір: ширина - ${window.innerWidth}px, висота - ${window.innerHeight}px`;
+    }
+
+    window.addEventListener('resize', updateWindowSize);
+    updateWindowSize();
+
+    // 7*. Два випадаючих списки: країна і міста
+    const countrySelect = document.getElementById('country');
+    const citiesSelect = document.getElementById('cities');
+    const selectedDisplay = document.getElementById('selectedCountryCity');
+
+    const countryCities = {
+        ger: ['Berlin', 'Munich', 'Frankfurt'],
+        usa: ['New York', 'Los Angeles', 'Chicago'],
+        ukr: ['Kyiv', 'Lviv', 'Odessa']
+    };
+
+    function updateCities() {
+        const selectedCountry = countrySelect.value;
+        const cities = countryCities[selectedCountry] || [];
+        // Очистити старі міста
+        citiesSelect.innerHTML = '';
+
+        // Додати нові
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.textContent = city;
+            option.value = city.toLowerCase();
+            citiesSelect.appendChild(option);
+        });
+
+        // Вивести назву країни і першого міста (або пусто, якщо міст немає)
+        const firstCity = cities.length > 0 ? cities[0] : '';
+        selectedDisplay.textContent = `Обрана країна: ${countrySelect.options[countrySelect.selectedIndex].text}, місто: ${firstCity}`;
+    }
+
+    // При зміні країни оновлюємо міста
+    countrySelect.addEventListener('change', updateCities);
+
+    // При зміні міста оновлюємо відображення
+    citiesSelect.addEventListener('change', () => {
+        const countryName = countrySelect.options[countrySelect.selectedIndex].text;
+        const cityName = citiesSelect.options[citiesSelect.selectedIndex]?.text || '';
+        selectedDisplay.textContent = `Обрана країна: ${countryName}, місто: ${cityName}`;
+    });
+
+    // Ініціалізація списку міст при завантаженні
+    updateCities();
+
+</script>
+</body>
+</html>

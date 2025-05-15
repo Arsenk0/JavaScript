@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uk">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Лабораторна робота 14 — Валідація форм JS</title>
+<style>
+    body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background: #f7f9fc;
+}
+    h1 {
+    color: #333;
+}
+    section {
+    background: #fff;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+    label {
+    display: block;
+    margin: 10px 0 5px;
+}
+    input[type="text"], input[type="email"] {
+    width: 300px;
+    padding: 8px;
+    font-size: 1rem;
+}
+    button {
+    margin-top: 10px;
+    padding: 8px 16px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+    .output {
+    margin-top: 8px;
+    font-weight: bold;
+    color: #006400;
+}
+    .output.error {
+    color: #a00;
+}
+    pre {
+    background: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+</style>
+</head>
+<body>
+
+<h1>Лабораторна робота 14 — Валідація даних у формах засобами JS</h1>
+
+<!-- 1 -->
+<section>
+    <h2>1. Перевірка першої літери на верхній регістр</h2>
+    <input type="text" id="inputUpperCase" placeholder="Введіть текст" />
+    <button onclick="testUpperCase()">Перевірити</button>
+    <div id="outputUpperCase" class="output"></div>
+</section>
+
+<!-- 2 -->
+<section>
+    <h2>2. Перевірка Email (проста)</h2>
+    <input type="text" id="inputEmailSimple" placeholder="Введіть email" />
+    <button onclick="testCheckEmail()">Перевірити</button>
+    <div id="outputEmailSimple" class="output"></div>
+</section>
+
+<!-- 3 -->
+<section>
+    <h2>3. Регулярний вираз для d + b+ + d (запам'ятати b і d)</h2>
+    <input type="text" id="inputRegex3" placeholder="Введіть текст" value="cdbBdbsbz" />
+    <button onclick="testRegex3()">Знайти</button>
+    <div id="outputRegex3" class="output"></div>
+</section>
+
+<!-- 4 -->
+<section>
+    <h2>4. Поміняти місцями 2 підрядки в тексті</h2>
+    <input type="text" id="inputSwap" placeholder="Введіть два слова через пробіл" value="Java Script" />
+    <button onclick="testSwap()">Поміняти місцями</button>
+    <div id="outputSwap" class="output"></div>
+</section>
+
+<!-- 5 -->
+<section>
+    <h2>5. Валідація номера банківської карти (9999-9999-9999-9999)</h2>
+    <input type="text" id="inputCard" placeholder="Введіть номер карти" />
+    <button onclick="testCard()">Перевірити</button>
+    <div id="outputCard" class="output"></div>
+</section>
+
+<!-- 6 -->
+<section>
+    <h2>6. Перевірка Email (з додатковими вимогами)</h2>
+    <input type="text" id="inputEmailAdv" placeholder="Введіть email" />
+    <button onclick="testCheckEmailAdv()">Перевірити</button>
+    <div id="outputEmailAdv" class="output"></div>
+</section>
+
+<!-- 7 -->
+<section>
+    <h2>7. Перевірка логіна + пошук чисел (цілі та з плаваючою комою)</h2>
+    <input type="text" id="inputLogin" placeholder="Введіть логін" />
+    <button onclick="testCheckLogin()">Перевірити</button>
+    <div id="outputLogin" class="output"></div>
+</section>
+
+<script>
+    // 1. Перевірка першої літери на верхній регістр
+    function upperCase(str) {
+    if (!str) return "Порожній рядок";
+    return (str[0] === str[0].toUpperCase())
+    ? "String's starts with uppercase character"
+    : "String's not starts with uppercase character";
+}
+    function testUpperCase() {
+    const val = document.getElementById('inputUpperCase').value.trim();
+    document.getElementById('outputUpperCase').textContent = upperCase(val);
+}
+
+    // 2. Проста перевірка email (приймає всі символи)
+    function checkEmail(email) {
+    // Простий regex для email (всі символи дозволені)
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+}
+    function testCheckEmail() {
+    const val = document.getElementById('inputEmailSimple').value.trim();
+    const result = checkEmail(val);
+    document.getElementById('outputEmailSimple').textContent = result ? "true" : "false";
+}
+
+    // 3. Регулярний вираз для d + b+ + d з запам'ятовуванням b і d, ігнорує регістр
+    function testRegex3() {
+    const text = document.getElementById('inputRegex3').value;
+    const regex = /d(b+)(d)/ig;
+    const matches = [];
+    let match;
+    while ((match = regex.exec(text)) !== null) {
+    // match[0] - повний збіг, match[1] - b+, match[2] - d
+    matches.push([match[0], match[1], match[2]]);
+}
+    // Форматуємо вивід, як у прикладі: ["dbBd", "bB", "d"]
+    const output = matches.length ? JSON.stringify(matches[0]) : "Немає збігів";
+    document.getElementById('outputRegex3').textContent = output;
+}
+
+    // 4. Поміняти місцями 2 підрядки (через пробіл)
+    function testSwap() {
+    const str = document.getElementById('inputSwap').value.trim();
+    // Припускаємо, що вхід - два слова через пробіл
+    const regex = /^(\w+)\s+(\w+)$/;
+    const result = str.replace(regex, '$2, $1');
+    document.getElementById('outputSwap').textContent = result;
+}
+
+    // 5. Валідація номера карти 9999-9999-9999-9999
+    function validateCardNumber(card) {
+    const regex = /^\d{4}-\d{4}-\d{4}-\d{4}$/;
+    return regex.test(card);
+}
+    function testCard() {
+    const val = document.getElementById('inputCard').value.trim();
+    const valid = validateCardNumber(val);
+    const out = document.getElementById('outputCard');
+    out.textContent = valid ? "Номер карти валідний" : "Номер карти не валідний";
+    out.className = valid ? "output" : "output error";
+}
+
+    // 6. Перевірка email з додатковими вимогами
+    /*
+    • Цифри (0-9)
+    • Тільки латинські літери A-Z, a-z
+    • В тілі емейлу допустимі лише символи "_" і "-" (не першими)
+    • Символ "-" не може повторюватися
+    */
+    function checkEmailAdvanced(email) {
+    // Перевірка основи
+    // Формат: local@domain
+    const parts = email.split('@');
+    if (parts.length !== 2) return false;
+    const local = parts[0];
+    const domain = parts[1];
+
+    // 1) Перша літера локальної частини - не _ чи -
+    if (/^[_-]/.test(local)) return false;
+    // 2) Перевірка локальної частини: тільки латиниця, цифри, _ і -
+    if (!/^[A-Za-z0-9_-]+$/.test(local)) return false;
+    // 3) "-" не може повторюватися у локальній частині
+    if (local.includes('--')) return false;
+    // 4) Перевірка домену: спрощено, щоб була латиниця, цифри, крапки і тире
+    if (!/^[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(domain)) return false;
+
+    return true;
+}
+    function testCheckEmailAdv() {
+    const val = document.getElementById('inputEmailAdv').value.trim();
+    const out = document.getElementById('outputEmailAdv');
+    const valid = checkEmailAdvanced(val);
+    if (valid) {
+    out.textContent = "Email is correct!";
+    out.className = "output";
+} else {
+    out.textContent = "Email is not correct!";
+    out.className = "output error";
+}
+}
+
+    // 7. Перевірка логіна + пошук чисел (цілі та з плаваючою комою)
+    /*
+    • Логін 2-10 символів, лише букви та цифри
+    • Перший символ не може бути цифрою
+    • Знайти всі числа (включно з числами з плаваючою комою)
+    */
+    function checkLogin(login) {
+    if (!/^[A-Za-z][A-Za-z0-9]{1,9}$/.test(login)) {
+    return {valid: false, numbers: []};
+}
+    // Знайти числа: цілі та з плаваючою точкою
+    // Regex для чисел з плаваючою крапкою (наприклад 1.1, 3.4)
+    // та цілі числа
+    const numberRegex = /\d+(\.\d+)?/g;
+    const numbers = [];
+    let m;
+    while ((m = numberRegex.exec(login)) !== null) {
+    numbers.push(m[0]);
+}
+    return {valid: true, numbers};
+}
+    function testCheckLogin() {
+    const val = document.getElementById('inputLogin').value.trim();
+    const out = document.getElementById('outputLogin');
+    const result = checkLogin(val);
+    if (result.valid) {
+    out.textContent = `true \n${result.numbers.join(', ') || "числа відсутні"}`;
+    out.className = "output";
+} else {
+    // Якщо не валідний логін - також показуємо знайдені числа (як у прикладі)
+    // Знайдемо числа, щоб вивести
+    const numberRegex = /\d+(\.\d+)?/g;
+    const nums = [];
+    let m;
+    while ((m = numberRegex.exec(val)) !== null) {
+    nums.push(m[0]);
+}
+    out.textContent = `false \n${nums.join(', ') || "числа відсутні"}`;
+    out.className = "output error";
+}
+}
+</script>
+
+</body>
+</html>

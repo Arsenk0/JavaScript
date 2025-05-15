@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна №12 — Вікна і Таблиці</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .section { display: none; }
+        .active { display: block; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+        .btn { margin: 5px 0; padding: 5px 10px; }
+        input[type="number"] { width: 60px; }
+    </style>
+</head>
+<body>
+
+<h1>Лабораторна робота №12</h1>
+
+<button class="btn" onclick="showSection('task1')">Завдання 1: Функція</button>
+<button class="btn" onclick="showSection('task2')">Завдання 2: Таблиця товарів</button>
+
+<!-- Завдання 1 -->
+<div id="task1" class="section active">
+    <h2>Обчислення значень функції</h2>
+    <form id="funcForm">
+        Виберіть функцію:
+        <select id="func">
+            <option value="sin">sin</option>
+            <option value="cos">cos</option>
+            <option value="tan">tg</option>
+        </select><br><br>
+
+        Початкове значення x: <input type="number" id="start" step="0.1"><br>
+        Кінцеве значення x: <input type="number" id="end" step="0.1"><br>
+        Крок: <input type="number" id="step" step="0.1"><br><br>
+
+        <button type="button" onclick="calculate()">Обчислити</button>
+    </form>
+</div>
+
+<!-- Завдання 2 -->
+<div id="task2" class="section">
+    <h2>Облік товарів</h2>
+    <table id="productTable">
+        <tr><th>Товар</th><th>Кількість</th><th>Ціна</th><th>Сума</th></tr>
+        <tr><td>Молоко</td><td>2</td><td>30</td><td>60</td></tr>
+        <tr><td>Хліб</td><td>1</td><td>20</td><td>20</td></tr>
+        <tr><td>Сир</td><td>3</td><td>50</td><td>150</td></tr>
+    </table><br>
+
+    Виберіть товар (рядок): <input type="number" id="row" min="1"><br>
+    Нова кількість: <input type="number" id="newQty"><br>
+    Нова ціна: <input type="number" id="newPrice"><br><br>
+
+    <button onclick="updateRow()">Оновити</button><br><br>
+    <strong>Загальна сума: <span id="totalSum">230</span> грн</strong>
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.section').forEach(div => div.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function calculate() {
+        let func = document.getElementById('func').value;
+        let start = parseFloat(document.getElementById('start').value);
+        let end = parseFloat(document.getElementById('end').value);
+        let step = parseFloat(document.getElementById('step').value);
+
+        if (isNaN(start) || isNaN(end) || isNaN(step) || step <= 0 || start > end) {
+            alert("Перевірте правильність введених даних.");
+            return;
+        }
+
+        let newWin = window.open("", "", "width=600,height=400");
+        newWin.document.write("<h2>Таблиця значень " + func + "(x)</h2>");
+        newWin.document.write("<table border='1'><tr><th>x</th><th>" + func + "(x)</th></tr>");
+
+        for (let x = start; x <= end; x += step) {
+            let y = Math[func](x);
+            newWin.document.write("<tr><td>" + x.toFixed(2) + "</td><td>" + y.toFixed(4) + "</td></tr>");
+        }
+
+        newWin.document.write("</table>");
+    }
+
+    function updateRow() {
+        let rowIdx = parseInt(document.getElementById('row').value) - 1;
+        let qty = parseFloat(document.getElementById('newQty').value);
+        let price = parseFloat(document.getElementById('newPrice').value);
+        let table = document.getElementById('productTable');
+
+        if (rowIdx < 0 || rowIdx >= table.rows.length - 1 || isNaN(qty) || isNaN(price)) {
+            alert("Неправильні дані!");
+            return;
+        }
+
+        table.rows[rowIdx + 1].cells[1].innerText = qty;
+        table.rows[rowIdx + 1].cells[2].innerText = price;
+        table.rows[rowIdx + 1].cells[3].innerText = (qty * price).toFixed(2);
+
+        let total = 0;
+        for (let i = 1; i < table.rows.length; i++) {
+            total += parseFloat(table.rows[i].cells[3].innerText);
+        }
+        document.getElementById('totalSum').innerText = total.toFixed(2);
+    }
+</script>
+
+</body>
+</html>
