@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №7</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        h2, p, div {
+            padding: 10px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h2 id="line1">Доступ до властивостей і методів</h2>
+<p id="line2">Колекція all</p>
+<div id="line3">Метод getElementById ()</div>
+
+<script>
+    let flag1 = true;
+    let flag2 = true;
+    let flag3 = true;
+
+    // Перший рядок — getElementById()
+    document.getElementById("line1").onclick = function() {
+        const el = document.getElementById("line1");
+        if (flag1) {
+            el.style.color = "white";
+            el.style.backgroundColor = "blue";
+        } else {
+            el.style.color = "black";
+            el.style.backgroundColor = "yellow";
+        }
+        flag1 = !flag1;
+    };
+
+    // Другий рядок — через колекцію all
+    document.all["line2"].onclick = function() {
+        const el = document.all["line2"];
+        if (flag2) {
+            el.style.color = "white";
+            el.style.backgroundColor = "green";
+        } else {
+            el.style.color = "red";
+            el.style.backgroundColor = "white";
+        }
+        flag2 = !flag2;
+    };
+
+    // Третій рядок — getElementById()
+    document.getElementById("line3").onclick = function() {
+        const el = document.getElementById("line3");
+        if (flag3) {
+            el.style.color = "white";
+            el.style.backgroundColor = "blue";
+        } else {
+            el.style.color = "black";
+            el.style.backgroundColor = "yellow";
+        }
+        flag3 = !flag3;
+    };
+</script>
+
+</body>
+</html>

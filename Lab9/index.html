@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота №9 - Робота з формами в JS</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Замовлення меблів</h1>
+<form id="furnitureForm">
+    <label>Виріб:
+        <select name="product">
+            <option value="">Оберіть виріб</option>
+            <option value="Шафа">Шафа</option>
+            <option value="Стіл">Стіл</option>
+            <option value="Сервант">Сервант</option>
+        </select>
+    </label><br>
+    <label>Матеріал:
+        <select name="material">
+            <option value="">Оберіть матеріал</option>
+            <option value="Дуб">Дуб</option>
+            <option value="Горіх">Горіх</option>
+            <option value="Бук">Бук</option>
+        </select>
+    </label><br>
+    <label>Кількість:
+        <input type="number" name="quantity" min="1">
+    </label><br>
+    <input type="submit" value="Замовити">
+</form>
+
+<div id="orderResult"></div>
+
+<hr>
+
+<h1>Обчислення тригонометричних функцій</h1>
+<form id="trigForm">
+    <label>Аргумент (в градусах):
+        <input type="text" name="arg" id="arg" onchange="checkTrigInput(this)">
+    </label><br>
+    <label>Функція:
+        <select name="func">
+            <option value="sin">sin</option>
+            <option value="cos">cos</option>
+            <option value="tan">tan</option>
+        </select>
+    </label><br>
+    <input type="submit" value="Обчислити">
+</form>
+
+<div id="trigResult"></div>
+
+<script>
+    document.getElementById("furnitureForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const form = e.target;
+        const product = form.product.value;
+        const material = form.material.value;
+        const quantity = form.quantity.value;
+
+        let errors = [];
+        if (!product) errors.push("виріб");
+        if (!material) errors.push("матеріал");
+        if (!quantity || quantity <= 0) errors.push("кількість");
+
+        if (errors.length > 0) {
+            alert("Будь ласка, введіть: " + errors.join(", "));
+            return;
+        }
+
+        const resultDiv = document.getElementById("orderResult");
+        resultDiv.innerHTML = `
+        <h3>Ваше замовлення:</h3>
+        <p>Виріб: <strong>${product}</strong></p>
+        <p>Матеріал: <strong>${material}</strong></p>
+        <p>Кількість: <strong>${quantity}</strong></p>
+      `;
+    });
+
+    function checkTrigInput(input) {
+        const val = input.value;
+        if (isNaN(val) || val.trim() === "") {
+            alert("Введіть числове значення аргументу!");
+            input.focus();
+            input.select();
+        }
+    }
+
+    document.getElementById("trigForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const argDeg = parseFloat(document.getElementById("arg").value);
+        const func = e.target.func.value;
+
+        if (isNaN(argDeg)) {
+            alert("Неправильний аргумент!");
+            return;
+        }
+
+        const radians = argDeg * Math.PI / 180;
+        const value = Math[func](radians);
+        const resultDiv = document.getElementById("trigResult");
+        resultDiv.innerHTML = `<h3>Результат:</h3><p><strong>${func}(${argDeg}°) = ${value.toFixed(4)}</strong></p>`;
+    });
+</script>
+</body>
+</html>

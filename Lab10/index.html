@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна №10</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Перегляд фотографій</h1>
+<select onchange="showPhoto(this)">
+    <option value="les">Ліс</option>
+    <option value="sea">Море</option>
+    <option value="mountain">Гори</option>
+</select>
+<br><br>
+<img name="fot" id="photo" width="400" height="300" alt="Фотографія">
+
+<hr>
+
+<h2>Побудова еліпса</h2>
+<label>Велика піввісь (a): <input type="number" id="a" value="100"></label>
+<label>Мала піввісь (b): <input type="number" id="b" value="50"></label>
+<button onclick="drawEllipse()">Намалювати</button>
+
+<h3>1. Еліпс у стилі мозаїки (DIV)</h3>
+<div id="mosaic"></div>
+
+<h3>2. Еліпс у SVG</h3>
+<svg id="svg" width="400" height="300"></svg>
+
+<h3>3. Еліпс у Canvas</h3>
+<canvas id="canvas" width="400" height="300"></canvas>
+
+<script>
+    const photo = {
+        les: new Image(400, 300),
+        sea: new Image(400, 300),
+        mountain: new Image(400, 300)
+    };
+    photo.les.src = "img/les.jpg";
+    photo.sea.src = "img/sea.jpg";
+    photo.mountain.src = "img/mountain.jpg";
+
+    function showPhoto(select) {
+        const key = select.value;
+        document.getElementById('photo').src = photo[key].src;
+    }
+
+    function drawEllipse() {
+        const a = parseInt(document.getElementById('a').value);
+        const b = parseInt(document.getElementById('b').value);
+
+        // 1. DIV mosaic
+        const mosaic = document.getElementById('mosaic');
+        mosaic.innerHTML = "";
+        for (let t = 0; t <= 2 * Math.PI; t += 0.01) {
+            const x = 200 + a * Math.cos(t);
+            const y = 150 + b * Math.sin(t);
+            const dot = document.createElement('div');
+            dot.className = 'dot';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+            mosaic.appendChild(dot);
+        }
+
+        // 2. SVG
+        const svg = document.getElementById('svg');
+        svg.innerHTML = `<ellipse cx="200" cy="150" rx="${a}" ry="${b}" stroke="blue" fill="none" stroke-width="2"/>`;
+
+        // 3. Canvas
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.ellipse(200, 150, a, b, 0, 0, 2 * Math.PI);
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+    }
+</script>
+
+</body>
+</html>

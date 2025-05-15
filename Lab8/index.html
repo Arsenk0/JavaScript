@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Практична робота №8 – Функції JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            background-color: #f9f9f9;
+        }
+        h2 {
+            color: #2a5d9f;
+        }
+        .task {
+            background-color: #fff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2a5d9f;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        input[type="number"] {
+            padding: 5px;
+            width: 150px;
+        }
+        button {
+            padding: 5px 10px;
+            margin-left: 10px;
+        }
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Практична робота №8 — Функції JavaScript</h1>
+
+<div class="task">
+    <h2>Завдання 2.1 — Обчислення площі кола</h2>
+    <input type="number" id="radius" placeholder="Введіть радіус">
+    <button onclick="showCircleArea()">Обчислити</button>
+    <div class="result" id="circleResult"></div>
+</div>
+
+<div class="task">
+    <h2>Завдання 2.2 — Перевірка на просте число</h2>
+    <input type="number" id="primeInput" placeholder="Введіть число">
+    <button onclick="checkPrime()">Перевірити</button>
+    <div class="result" id="primeResult"></div>
+</div>
+
+<div class="task">
+    <h2>Завдання 2.3 — Обчислення факторіалу</h2>
+    <input type="number" id="factorialInput" placeholder="Введіть число">
+    <button onclick="calculateFactorial()">Обчислити</button>
+    <div class="result" id="factorialResult"></div>
+</div>
+
+<script>
+    // Завдання 2.1
+    function circleArea(radius) {
+        return Math.PI * radius * radius;
+    }
+    function showCircleArea() {
+        const r = parseFloat(document.getElementById("radius").value);
+        if (isNaN(r) || r < 0) {
+            document.getElementById("circleResult").textContent = "Будь ласка, введіть додатнє число.";
+            return;
+        }
+        const area = circleArea(r).toFixed(2);
+        document.getElementById("circleResult").textContent = `Площа кола: ${area}`;
+    }
+
+    // Завдання 2.2
+    function isPrime(n) {
+        if (n <= 1) return false;
+        for (let i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i === 0) return false;
+        }
+        return true;
+    }
+    function checkPrime() {
+        const n = parseInt(document.getElementById("primeInput").value);
+        if (isNaN(n) || n < 0) {
+            document.getElementById("primeResult").textContent = "Введіть натуральне число.";
+            return;
+        }
+        const result = isPrime(n) ? "є простим числом" : "не є простим числом";
+        document.getElementById("primeResult").textContent = `${n} ${result}`;
+    }
+
+    // Завдання 2.3
+    function factorial(n) {
+        if (n === 0 || n === 1) return 1;
+        return n * factorial(n - 1);
+    }
+    function calculateFactorial() {
+        const n = parseInt(document.getElementById("factorialInput").value);
+        if (isNaN(n) || n < 0) {
+            document.getElementById("factorialResult").textContent = "Введіть невід’ємне ціле число.";
+            return;
+        }
+        const result = factorial(n);
+        document.getElementById("factorialResult").textContent = `Факторіал числа ${n}: ${result}`;
+    }
+</script>
+
+</body>
+</html>

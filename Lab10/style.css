@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+select, input {
+    font-size: 16px;
+    margin: 5px;
+}
+
+#mosaic {
+    position: relative;
+    width: 400px;
+    height: 300px;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+}
+
+.dot {
+    width: 2px;
+    height: 2px;
+    background-color: red;
+    position: absolute;
+}
